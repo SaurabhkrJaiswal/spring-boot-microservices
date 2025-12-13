@@ -1,0 +1,64 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- 3.4.1
+
+pool:
+  name: Azure Pipelines
+  demands: maven
+
+  timeoutInMinutes: 30
+
+variables:
+  ACR_NAME: 'MicroServiceACR'
+  AKS_RG: 'MicroServiceRG'
+  AKS_CLUSTER: 'devaks'
+
+steps:
+- task: AzureCLI@2
+  displayName: 'Login To ACR'
+  inputs:
+    azureSubscription: 'AZ-Pipeline-Service-Connection'
+    scriptType: batch
+    scriptLocation: inlineScript
+    inlineScript: |
+      # Login ACR
+           az acr login --name $(ACR_NAME)
+     
+      # Get AKS credentials
+           az aks get-credentials --resource-group $(AKS_RG)  --name $(AKS_CLUSTER) overwrite-existing
+- task: Maven@4
+  displayName: 'ACR Image genration'
+  inputs:
+    azureSubscription: 'AZ-Pipeline-Service-Connection'
+    mavenPomFile: azurePoc/pom.xml
+    goals: 'compile jib:build'
+    options: '-Djib.to.image=$(ACR_NAME).azurecr.io/$(IMAGE_NAME):latest'
+    publishJUnitResults: false
+
+- task: AzureCLI@2
+  displayName: 'Get AKS Credentials to deploy in next'
+  inputs:
+    azureSubscription: 'AZ-Pipeline-Service-Connection'
+    scriptType: batch
+    scriptLocation: inlineScript
+    inlineScript: 'az aks get-credentials --resource-group $(AKS_RG) --name $(AKS_CLUSTER) --overwrite-existing'
+
+- task: KubernetesManifest@1
+  displayName: deploy
+  inputs:
+    connectionType: azureResourceManager
+    azureSubscriptionConnection: 'AZ-Pipeline-Service-Connection'
+    azureResourceGroup: devTestacraks
+    kubernetesCluster: devaks
+    useClusterAdmin: true
+    namespace: default
+    manifests: azurePoc/Deployment.yml
+    containers: '  devestacraks.azurecr.io/azurepoc:latest'
+    imagePullSecrets: 'az aks update --name devaks --resource-group  devTestacraks --attach-acr devestacraks'
+
+
+
