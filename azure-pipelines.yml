@@ -32,7 +32,7 @@ steps:
   displayName: 'Login To ACR'
   inputs:
     azureSubscription: 'AZ-Pipeline-Service-Connection-MS'
-    scriptType: batch
+    scriptType: bash
     scriptLocation: inlineScript
     inlineScript: |
       # Login ACR
