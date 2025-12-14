@@ -31,7 +31,7 @@ steps:
 - task: AzureCLI@2
   displayName: 'Login To ACR'
   inputs:
-    azureSubscription: 'AZ-Pipeline-Service-Connection-MS'
+    azureSubscription: 'AZ-Pipeline-Service-Connection-MS_APP'
     scriptType: bash
     scriptLocation: inlineScript
     inlineScript: |
@@ -43,7 +43,7 @@ steps:
 - task: Maven@4
   displayName: 'ACR Image genration'
   inputs:
-    azureSubscription: 'AZ-Pipeline-Service-Connection-MS'
+    azureSubscription: 'AZ-Pipeline-Service-Connection-MS_APP'
     mavenPomFile: section6/v2-spring-cloud-config/accounts/pom.xml
     goals: 'compile jib:build'
     options: '-Djib.to.image=$(ACR_NAME).azurecr.io/$(IMAGE_NAME):latest'
@@ -52,7 +52,7 @@ steps:
 - task: AzureCLI@2
   displayName: 'Get AKS Credentials to deploy in next'
   inputs:
-    azureSubscription: 'AZ-Pipeline-Service-Connection-MS'
+    azureSubscription: 'AZ-Pipeline-Service-Connection-MS_APP'
     scriptType: batch
     scriptLocation: inlineScript
     inlineScript: 'az aks get-credentials --resource-group $(AKS_RG) --name $(AKS_CLUSTER) --overwrite-existing'
@@ -61,7 +61,7 @@ steps:
   displayName: deploy
   inputs:
     connectionType: azureResourceManager
-    azureSubscriptionConnection: 'AZ-Pipeline-Service-Connection-MS'
+    azureSubscriptionConnection: 'AZ-Pipeline-Service-Connection-MS_APP'
     azureResourceGroup: devTestacraks
     kubernetesCluster: devaks
     useClusterAdmin: true
