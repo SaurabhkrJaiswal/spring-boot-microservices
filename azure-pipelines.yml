@@ -41,12 +41,30 @@ steps:
       # Get AKS credentials
            az aks get-credentials --resource-group $(AKS_RG)  --name $(AKS_CLUSTER)
 - task: Maven@4
-  displayName: 'ACR Image genration'
+  displayName: 'AccountApp Image Generation'
   inputs:
     azureSubscription: 'AZ-Pipeline-Service-Connection-MS'
     mavenPomFile: section6/v2-spring-cloud-config/accounts/pom.xml
     goals: 'compile jib:build'
     options: '-Djib.to.image=$(ACR_NAME).azurecr.io/accounts:latest'
+    publishJUnitResults: false
+
+- task: Maven@4
+  displayName: 'Cards Image Generation'
+  inputs:
+    azureSubscription: 'AZ-Pipeline-Service-Connection-MS'
+    mavenPomFile: section6/v2-spring-cloud-config/cards/pom.xml
+    goals: 'compile jib:build'
+    options: '-Djib.to.image=$(ACR_NAME).azurecr.io/Cards:latest'
+    publishJUnitResults: false
+
+- task: Maven@4
+  displayName: 'Loans Image Generation'
+  inputs:
+    azureSubscription: 'AZ-Pipeline-Service-Connection-MS'
+    mavenPomFile: section6/v2-spring-cloud-config/loans/pom.xml
+    goals: 'compile jib:build'
+    options: '-Djib.to.image=$(ACR_NAME).azurecr.io/loans:latest'
     publishJUnitResults: false
 
 - task: AzureCLI@2
