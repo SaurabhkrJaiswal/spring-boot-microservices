@@ -53,7 +53,7 @@ steps:
   displayName: 'Get AKS Credentials to deploy in next'
   inputs:
     azureSubscription: 'AZ-Pipeline-Service-Connection-MS'
-    scriptType: batch
+    scriptType: bash
     scriptLocation: inlineScript
     inlineScript: 'az aks get-credentials --resource-group $(AKS_RG) --name $(AKS_CLUSTER) --overwrite-existing'
 
