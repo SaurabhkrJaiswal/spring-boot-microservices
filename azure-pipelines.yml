@@ -46,7 +46,7 @@ steps:
     azureSubscription: 'AZ-Pipeline-Service-Connection-MS'
     mavenPomFile: section6/v2-spring-cloud-config/accounts/pom.xml
     goals: 'compile jib:build'
-    options: '-Djib.to.image=$(ACR_NAME).azurecr.io/$(IMAGE_NAME):latest'
+    options: '-Djib.to.image=$(ACR_NAME).azurecr.io/accounts:latest'
     publishJUnitResults: false
 
 - task: AzureCLI@2
