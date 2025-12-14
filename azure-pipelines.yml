@@ -67,6 +67,15 @@ steps:
     options: '-Djib.to.image=$(ACR_NAME).azurecr.io/loans:latest'
     publishJUnitResults: false
 
+- task: Maven@4
+  displayName: 'ConfigServer Image Generation'
+  inputs:
+    azureSubscription: 'AZ-Pipeline-Service-Connection-MS'
+    mavenPomFile: section6/v2-spring-cloud-config/configserver/pom.xml
+    goals: 'compile jib:build'
+    options: '-Djib.to.image=$(ACR_NAME).azurecr.io/configserver:latest'
+    publishJUnitResults: false
+
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'section6/v2-spring-cloud-config/docker-compose/default'
