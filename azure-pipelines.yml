@@ -13,8 +13,8 @@ pool:
   timeoutInMinutes: 30
 
 variables:
-  ACR_NAME: 'MicroServiceACR'
-  AKS_RG: 'MicroServiceRG'
+  ACR_NAME: 'microservicesapacr'
+  AKS_RG: 'microservices_app'
   AKS_CLUSTER: 'devaks'
 
 steps:
