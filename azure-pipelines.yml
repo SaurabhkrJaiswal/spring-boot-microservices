@@ -76,13 +76,7 @@ steps:
     options: '-Djib.to.image=$(ACR_NAME).azurecr.io/configserver:latest'
     publishJUnitResults: false
 
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: 'section6/v2-spring-cloud-config/docker-compose/default'
-    Contents: '**'
-    TargetFolder: (Build.ArtifactStagingDirectory)/default
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
+
+
+
    
