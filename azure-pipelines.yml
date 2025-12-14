@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 trigger:
-- 3.4.1
+- feature/microservicesDeployment
 
 pool:
   name: Azure Pipelines
@@ -34,7 +34,7 @@ steps:
   displayName: 'ACR Image genration'
   inputs:
     azureSubscription: 'AZ-Pipeline-Service-Connection'
-    mavenPomFile: azurePoc/pom.xml
+    mavenPomFile: section6/v2-spring-cloud-config/accounts/pom.xml
     goals: 'compile jib:build'
     options: '-Djib.to.image=$(ACR_NAME).azurecr.io/$(IMAGE_NAME):latest'
     publishJUnitResults: false
