@@ -1,5 +1,4 @@
 # Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
@@ -8,7 +7,7 @@ trigger:
 
 pool:
   name: Azure Pipelines
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
   demands: maven
 
   timeoutInMinutes: 30
@@ -19,6 +18,16 @@ variables:
   AKS_CLUSTER: 'devaks'
 
 steps:
+- task: JavaToolInstaller@0
+  inputs:
+    versionSpec: '21'
+    jdkArchitectureOption: 'x64'
+    jdkSourceOption: 'PreInstalled'
+
+- script: |
+    java -version
+    mvn -version
+  displayName: "Verify Java version"
 - task: AzureCLI@2
   displayName: 'Login To ACR'
   inputs:
