@@ -1,0 +1,82 @@
+# Starter pipeline
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- feature/microservicesDeployment
+
+pool:
+  name: Azure Pipelines
+  vmImage: 'ubuntu-latest'
+  demands: maven
+
+  timeoutInMinutes: 30
+
+variables:
+  ACR_NAME: 'devestacraks'
+  AKS_RG: 'devTestacraks'
+  AKS_CLUSTER: 'devaks'
+
+steps:
+- task: JavaToolInstaller@0
+  inputs:
+    versionSpec: '21'
+    jdkArchitectureOption: 'x64'
+    jdkSourceOption: 'PreInstalled'
+
+- script: |
+    java -version
+    mvn -version
+  displayName: "Verify Java version"
+- task: AzureCLI@2
+  displayName: 'Login To ACR'
+  inputs:
+    azureSubscription: 'AZ-Pipeline-Service-Connection-MS'
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+      # Login ACR
+           az acr login --name $(ACR_NAME)
+     
+      # Get AKS credentials
+           az aks get-credentials --resource-group $(AKS_RG)  --name $(AKS_CLUSTER)
+- task: Maven@4
+  displayName: 'AccountApp Image Generation'
+  inputs:
+    azureSubscription: 'AZ-Pipeline-Service-Connection-MS'
+    mavenPomFile: section6/v2-spring-cloud-config/accounts/pom.xml
+    goals: 'compile jib:build'
+    options: '-Djib.to.image=$(ACR_NAME).azurecr.io/accounts:latest'
+    publishJUnitResults: false
+
+- task: Maven@4
+  displayName: 'Cards Image Generation'
+  inputs:
+    azureSubscription: 'AZ-Pipeline-Service-Connection-MS'
+    mavenPomFile: section6/v2-spring-cloud-config/cards/pom.xml
+    goals: 'compile jib:build'
+    options: '-Djib.to.image=$(ACR_NAME).azurecr.io/cards:latest'
+    publishJUnitResults: false
+
+- task: Maven@4
+  displayName: 'Loans Image Generation'
+  inputs:
+    azureSubscription: 'AZ-Pipeline-Service-Connection-MS'
+    mavenPomFile: section6/v2-spring-cloud-config/loans/pom.xml
+    goals: 'compile jib:build'
+    options: '-Djib.to.image=$(ACR_NAME).azurecr.io/loans:latest'
+    publishJUnitResults: false
+
+- task: Maven@4
+  displayName: 'ConfigServer Image Generation'
+  inputs:
+    azureSubscription: 'AZ-Pipeline-Service-Connection-MS'
+    mavenPomFile: section6/v2-spring-cloud-config/configserver/pom.xml
+    goals: 'compile jib:build'
+    options: '-Djib.to.image=$(ACR_NAME).azurecr.io/configserver:latest'
+    publishJUnitResults: false
+
+
+
+
+   
