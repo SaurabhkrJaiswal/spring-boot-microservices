@@ -27,7 +27,7 @@ metadata:
 spec:
   selector:
     app: configserver
-  type: LoadBalancer
+  type: ClusterIp
   ports:
     - protocol: TCP
       port: 8071
