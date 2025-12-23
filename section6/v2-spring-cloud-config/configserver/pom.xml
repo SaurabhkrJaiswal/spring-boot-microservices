@@ -76,6 +76,14 @@
 				<artifactId>jib-maven-plugin</artifactId>
 				<version>3.4.2</version>
 				<configuration>
+					<from>
+						  <platforms>
+            					<platform>
+                					<architecture>arm64</architecture>
+                					<os>linux</os>
+            					</platform>
+      					  </platforms>
+    				</from>
 					<to>
 						<image>dockmesaurabh/${project.artifactId}:s6</image>
 					</to>
