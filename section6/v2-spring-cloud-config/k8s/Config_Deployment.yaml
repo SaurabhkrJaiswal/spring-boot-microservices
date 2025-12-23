@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
         - name: configserver
-          image: devestacraks.azurecr.io/configserver:s6 
+          image: devestacraks.azurecr.io/configserver:s6
+          imagePullPolicy: Always
           ports:
             - containerPort: 8071
 ---
