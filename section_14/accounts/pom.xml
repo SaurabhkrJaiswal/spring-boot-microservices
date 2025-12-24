@@ -142,10 +142,10 @@
             <plugin>
 				<groupId>com.google.cloud.tools</groupId>
 				<artifactId>jib-maven-plugin</artifactId>
-				<version>3.4.2</version>
-				<configuration>
-					<from>
-						<image>eclipse-temurin:21-jre-jammy</image>
+				<version>3.5.1</version>
+                <configuration>
+					 <from>
+       					 <image>mcr.microsoft.com/openjdk/jdk:17-ubuntu</image>
 						  <platforms>
             					<platform>
                 					<architecture>arm64</architecture>
@@ -153,9 +153,10 @@
             					</platform>
       					  </platforms>
     				</from>
-					<to>
-						<image>dockmesaurabh/${project.artifactId}:s14</image>
-					</to>
+                   	<to>
+                       <image>devestacraks.azurecr.io/${project.artifactId}:latest</image>
+                   	</to>
+                </configuration>
 				</configuration>
 			</plugin>
 		</plugins>
