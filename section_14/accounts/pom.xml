@@ -157,7 +157,6 @@
                        <image>devestacraks.azurecr.io/${project.artifactId}:s14</image>
                    	</to>
                 </configuration>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
