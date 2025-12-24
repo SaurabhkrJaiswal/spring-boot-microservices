@@ -86,7 +86,7 @@
       					  </platforms>
     				</from>
 					<to>
-						<image>dockmesaurabh/${project.artifactId}:s6</image>
+						<image>devestacraks.azurecr.io/${project.artifactId}:s6</image>
 					</to>
 				</configuration>
 			</plugin>
