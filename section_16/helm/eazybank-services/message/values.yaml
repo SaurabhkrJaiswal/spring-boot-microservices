@@ -9,7 +9,7 @@ appName: message
 replicaCount: 1
 
 image:
-  repository: eazybytes/message
+  repository: devestacraks.azurecr.io/message
   tag: s14
 
 containerPort: 9010
